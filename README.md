@@ -37,13 +37,19 @@ python3 server.py --base-dir /path/to/share
 
 ## Usage
 
-Start the server:
+### Linux / macOS
 
 ```bash
 python3 server.py --base-dir ./share --port 8000
 ```
 
-On startup, the server prints an **8-digit PIN** to the console.
+### Windows
+
+```powershell
+python server.py --base-dir D:\share --port 8000
+```
+
+On startup, the server prints an **8-digit PIN** to the console.  
 You need to enter this PIN in your browser on the safety screen before accessing files.
 
 Example: this server is running on a computer with IP `192.168.1.110` in the local network:
