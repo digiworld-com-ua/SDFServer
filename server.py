@@ -24,6 +24,7 @@ import zlib
 import binascii
 import argparse
 import threading
+import hashlib
 import secrets
 from typing import List
 from http.cookies import SimpleCookie
@@ -45,6 +46,8 @@ PORT = int(os.environ.get("PORT", "8000"))
 
 MAX32 = 0xFFFFFFFF
 MAX16 = 0xFFFF
+
+SECRET_SALT = secrets.token_hex(16)
 
 # ---------- Helpers: sizes, dates ----------
 def human_size(n: int) -> str:
@@ -394,7 +397,10 @@ class FileServer(SimpleHTTPRequestHandler):
             return False
         c = SimpleCookie(raw)
         v = c.get("consent")
-        return bool(v and v.value == "ok")
+        if not v:
+            return False
+        expected = hashlib.sha256((PIN_CODE + SECRET_SALT).encode()).hexdigest()
+        return secrets.compare_digest(v.value, expected)
 
     def _warning_page(self, redirect_path: str, error_msg: str = "") -> bytes:
         """
@@ -546,7 +552,8 @@ function submitAgree() {{ document.getElementById('agreeForm').submit(); }}
             self.send_response(303)
             self.send_header("Location", redirect_to)
             # Cookie valid for session; SameSite=Lax to avoid cross-site corner cases
-            self.send_header("Set-Cookie", "consent=ok; Path=/; SameSite=Lax")
+            cookie_val = hashlib.sha256((pin + SECRET_SALT).encode()).hexdigest()
+            self.send_header("Set-Cookie", f"consent={cookie_val}; Path=/; SameSite=Lax")
             self.end_headers()
             return
 
@@ -679,7 +686,7 @@ th{background:#fafafa}
             except Exception:
                 rel_parent = ""
             parent_url = url_from_relpath(Path(rel_parent), trailing_slash=True)
-            out.write(f'<p><a class="btn" href="{parent_url}">⬅️ Up</a></p>')
+            out.write(f'<p><a class="btn" href="{parent_url}"><svg width="16" height="16"><use href="#icon-back"></use></svg> Back</a></p>')
 
         out.write("<table><thead><tr>")
         out.write("<th>Name</th><th>Size</th><th>Modified</th><th>Actions</th>")
