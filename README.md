@@ -66,7 +66,7 @@ Now open `http://192.168.1.110:8000` in a browser on another computer and enter 
 | Flag                | Description                                                   | Default   |
 |---------------------|---------------------------------------------------------------|-----------|
 | `--base-dir PATH`   | Root directory to serve                                       | `.` (cwd) |
-| `--dir-size`        | Show recursive folder sizes (may be slow on large trees)      | OFF       |
+| `--dir-size`        | Show recursive folder sizes (⚠️may be slow on large trees)    | OFF       |
 | `--host HOST`       | Host to bind (e.g. `0.0.0.0` or `127.0.0.1`)                  | `0.0.0.0` |
 | `--port PORT`       | Port number                                                   | `8000`    |
 | `--compress-level N`| ZIP deflate compression level (0..9, where 0 = none, 9 = max) | `6`       |
