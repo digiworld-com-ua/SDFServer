@@ -51,9 +51,10 @@ Example: this server is running on a computer with IP `192.168.1.110` in the loc
 ```
 [i] Serving: /home/user/share
 [i] URL:     http://0.0.0.0:8000/
-[i] DIR_SIZE: OFF  |  COMPRESS_LEVEL: 6
+[i] DIR_SIZE calculation: ON
+[i] COMPRESS_LEVEL: 6
 [i] WARNING GATE: ON
-[i] PIN: 94027351
+[i] PIN: 67190394
 ```
 
 Now open `http://192.168.1.110:8000` in a browser on another computer and enter the PIN.
